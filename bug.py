@@ -29,7 +29,7 @@ class Bug(Sprite):
         self.rect.y = int(self.y)
 
     def draw_bug(self):
-        self.update_biomes()
+        #self.update_biomes()
 
         pg.draw.circle(self.screen,
                        self.color,
@@ -61,10 +61,10 @@ class Bug(Sprite):
     def update_biomes(self):
         biomes_to_update = []
         for biome in self.map.biomes:
-            if self.rect.right >= biome.rect.right >= self.rect.left or\
-                self.rect.left <= biome.rect.left <= self.rect.right or\
-                self.rect.bottom >= biome.rect.bottom >= self.rect.top or\
-                self.rect.top <= biome.rect.top <= self.rect.bottom:
+            if self.rect.right >= biome.rect.right + 2 >= self.rect.left or\
+                self.rect.left <= biome.rect.left - 2 <= self.rect.right or\
+                self.rect.bottom >= biome.rect.bottom + 2 >= self.rect.top or\
+                self.rect.top <= biome.rect.top - 2 <= self.rect.bottom:
                 self.screen.fill(biome.color, biome.rect)
                 for tree in biome.trees:
                     tree.draw()
