@@ -29,7 +29,7 @@ class Bug(Sprite):
         self.rect.y = int(self.y)
 
     def draw_bug(self):
-        #self.update_biomes()
+        self.update_biomes()
 
         pg.draw.circle(self.screen,
                        self.color,
@@ -67,6 +67,7 @@ class Bug(Sprite):
                 self.screen.fill(biome.color, biome.rect)
                 for tree in biome.trees:
                     tree.draw()
+                # pass
 
 
 
