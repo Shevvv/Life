@@ -14,13 +14,13 @@ class Yavanna():
 
     def init_populate(self):
         for biome in self.biomes:
-            max_density = int(biome.t_factor * self.pixel_size ** 2)
+            max_density = biome.t_factor * self.pixel_size ** 2
             biome.max_density = max_density
 
             trees_coords = []
-            number_of_trees = normal(loc=max_density,
+            number_of_trees = int(normal(loc=max_density,
                                      scale=0.05,
-                                     size=1) if max_density != 0 else 0
+                                     size=1)) if max_density != 0 else 0
 
             while len(trees_coords) < number_of_trees:
                 tree_x = randint(0, self.pixel_size)
