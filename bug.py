@@ -10,7 +10,8 @@ import math
 
 class Bug(Sprite):
 
-    def __init__(self, size, color, screen, map, x=0, y=0, b_color='cyan'):
+    def __init__(self, size, color, screen, map, x=0, y=0, b_color='cyan',
+                 _movement=0, _rotation=0):
         # b_color stands for body color, the color visible to other bugs
         super().__init__()
         self.screen = screen
@@ -22,8 +23,13 @@ class Bug(Sprite):
         self.map = map
         self.rect = pg.Rect(self.x, self.y, 2*self.size, 2*self.size)
         self.direct = 270 # direction in degrees
+        self._movement = _movement
+        self._rotation = _rotation
 
-    def update(self, movement, rotation):
+    def update(self, movement=None, rotation=None):
+        movement = self._movement if movement is None else movement
+        rotation = self._rotation if rotation is None else rotation
+
         self.direct += rotation
         self.x += movement[0]
         self.y += movement[1]

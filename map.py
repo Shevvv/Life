@@ -124,15 +124,11 @@ class Biome():
         self.max_density = None
         self.plants = []
 
-    def update_plants(self):
+    def draw(self):
         plant_rects = []
 
         plant_rects.append(self.rect)
         self.screen.fill(self.color, self.rect)
-        for plant in self.plants:
-            plant.update()
-            plant.draw()
-            plant_rects.append(plant.rect)
 
         return plant_rects
 

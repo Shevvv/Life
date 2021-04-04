@@ -19,6 +19,7 @@ class Yavanna():
         self.biomes = map.biomes
         self.pixel_size = map.pixel_size
         self.screen = screen
+        self.algae = []
         self.init_populate()
 
     # This works at pixel size 32 and greater (basically, any value whose
@@ -27,9 +28,13 @@ class Yavanna():
     # significant, to the point of becoming non relevant at pixel size 1
     # (basically int vs float conflict).
     def init_populate(self):
+        extend_algea = False
+
         for biome in self.biomes:
             if biome.name == 'sea':
                 Plant = Alga
+                extend_algea = True
+
             else:
                 Plant = Tree
             max_density = biome.t_factor * self.pixel_size ** 2
@@ -55,6 +60,8 @@ class Yavanna():
             for i, plant in enumerate(plants_coords):
                 plants.add(Plant(plant[0], plant[1], self.screen, biome,
                              self.pixel_size, noise_y=i))
+            if extend_algea:
+                self.algae.extend(plants)
 
             biome.plants = plants
 

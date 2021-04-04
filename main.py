@@ -14,6 +14,8 @@ def run_game():
 
     s = Settings()
     screen = pg.display.set_mode(s.display_size)
+    screen_width = screen.get_width()
+    screen_height = screen.get_height()
     pg.display.set_caption('Life')
 
     map = Map(screen, weight=s.weight, bias=s.bias, pixel_size=s.pixel_size,
@@ -39,7 +41,11 @@ def run_game():
                 sys.exit()
 
         for biome in map.sea:
-             rects_to_update.extend(biome.update_plants())
+             rects_to_update.extend(biome.draw())
+
+        for alga in yavanna.algae:
+            alga.update()
+            alga.draw()
 
         for bug in bugs:
             try: # if the left eye was calculated yet, update it.
