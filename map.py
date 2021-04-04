@@ -60,6 +60,9 @@ class Map(pg.Surface):
 
     def map_biomes(self, sea_level=63, steppe_level=127, desert_level=191,
             grayscale=False):
+
+        self.sea = []
+
         if self.pixel_size != 1:
             self.pixelize()
         else:
@@ -80,7 +83,7 @@ class Map(pg.Surface):
                 elif pixel < sea_level:
                     color = (0, 0, 255) # sea
                     biome = 'sea'
-                    t_factor = 0
+                    t_factor = 0.01
                 elif sea_level <= pixel < steppe_level:
                     color = (0 , 100, 0) # land
                     biome = 'land'
@@ -97,7 +100,10 @@ class Map(pg.Surface):
                                        y * self.pixel_size,
                                        self.pixel_size,
                                        self.pixel_size)
-                biome= Biome((x, y), biome, t_factor, rect_to_fill, color)
+                biome = Biome((x, y), biome, t_factor, rect_to_fill,
+                              self.screen, color)
+                if biome.name == 'sea':
+                    self.sea.append(biome)
                 self.biomes.append(biome)
                 self.fill(color, rect_to_fill)
 
@@ -106,14 +112,27 @@ class Map(pg.Surface):
 
 class Biome():
 
-    def __init__(self, coords, biome, t_factor, rect, color):
+    def __init__(self, coords, biome, t_factor, rect, screen, color):
         self.x = coords[0]
         self.y = coords[1]
         self.rect = rect
+        self.screen = screen
         self.name = biome
         self.t_factor = t_factor
         self.color = color
 
         self.max_density = None
-        self.trees = []
+        self.plants = []
+
+    def update_plants(self):
+        plant_rects = []
+
+        plant_rects.append(self.rect)
+        self.screen.fill(self.color, self.rect)
+        for plant in self.plants:
+            plant.update()
+            plant.draw()
+            plant_rects.append(plant.rect)
+
+        return plant_rects
 

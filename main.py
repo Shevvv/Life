@@ -35,8 +35,17 @@ def run_game():
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
+                pg.quit()
                 sys.exit()
+
+        for biome in map.sea:
+             rects_to_update.extend(biome.update_plants())
+
         for bug in bugs:
+            try: # if the left eye was calculated yet, update it.
+                rects_to_update.extend([bug.rect.copy(), bug.left_eye.copy(), bug.right_eye.copy()])
+            except: # otherwise, only update the rest of the bug.
+                rects_to_update.extend([bug.rect.copy()])
             bug.update(s._movement, s._rotation)
             bug.draw_bug()
             rects_to_update.extend([bug, bug.left_eye, bug.right_eye])
@@ -44,3 +53,5 @@ def run_game():
 
 
 run_game()
+
+

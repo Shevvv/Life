@@ -10,11 +10,13 @@ import math
 
 class Bug(Sprite):
 
-    def __init__(self, size, color, screen, map, x=0, y=0):
+    def __init__(self, size, color, screen, map, x=0, y=0, b_color='cyan'):
+        # b_color stands for body color, the color visible to other bugs
         super().__init__()
         self.screen = screen
         self.size = size
         self.color = color
+        self.b_color = b_color
         self.x = x
         self.y = y
         self.map = map
@@ -31,10 +33,19 @@ class Bug(Sprite):
     def draw_bug(self):
         self.update_biomes()
 
+        # represent the bug's health
         pg.draw.circle(self.screen,
                        self.color,
                        (self.rect.centerx, self.rect.centery),
                        self.size)
+
+        # represent the bug's visible surface
+        pg.draw.circle(self.screen,
+            self.b_color,
+            (self.rect.centerx, self.rect.centery),
+            self.size,
+            width=2)
+
         _left_eye_center_x = int(self.rect.centerx +
                                  self.size *
                                  math.cos(math.radians(self.direct - 30)))
@@ -58,15 +69,14 @@ class Bug(Sprite):
                                        _right_eye_center_y),
                                        2)
 
+        #self.left_leg =
+
     def update_biomes(self):
         for biome in self.map.biomes:
-            if self.rect.right >= biome.rect.right + 2 >= self.rect.left or\
-                self.rect.left <= biome.rect.left - 2 <= self.rect.right or\
-                self.rect.bottom >= biome.rect.bottom + 2 >= self.rect.top or\
-                self.rect.top <= biome.rect.top - 2 <= self.rect.bottom:
+            if biome.rect.colliderect(self.rect.inflate(6, 6)):
                 self.screen.fill(biome.color, biome.rect)
-                for tree in biome.trees:
-                    tree.draw()
+                [tree.draw() for tree in biome.plants.sprites()]
+
                 # pass
 
 
